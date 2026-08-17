@@ -8,7 +8,6 @@ import {
   CheckCircle2, 
   Lock, 
   Mail, 
-  DollarSign, 
   Send, 
   HelpCircle, 
   ChevronDown, 
