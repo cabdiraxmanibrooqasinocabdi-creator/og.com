@@ -36,34 +36,57 @@ export default function Home() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSendEmail = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !budget) return;
 
+    setIsSubmitting(true);
     const recipient = 'cabdiraxmanibrooqasinocabdi@gmail.com';
-    const subject = encodeURIComponent(`Domain Budget Proposal for OGADENIA.COM`);
-    const bodyContent = encodeURIComponent(
-      `Hello,\n\nI am interested in acquiring the domain OGADENIA.COM.\n\n` +
-      `Proposed Budget: $${budget}\n` +
-      `Name: ${name || 'N/A'}\n` +
-      `Email: ${email}\n\n` +
-      `Additional Details / Message:\n${message || 'No additional details provided.'}\n\n` +
-      `Best regards,\n${name || email}`
-    );
 
-    // Trigger user mail client
-    window.location.href = `mailto:${recipient}?subject=${subject}&body=${bodyContent}`;
-
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setShowOfferModal(false);
-      setName('');
-      setEmail('');
-      setBudget('');
-      setMessage('');
-    }, 4000);
+    try {
+      // Send directly to your email inbox via FormSubmit API
+      await fetch(`https://formsubmit.co/ajax/${recipient}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `New Domain Budget Proposal for OGADENIA.COM ($${budget})`,
+          Domain: 'OGADENIA.COM',
+          'Proposed Budget ($)': `$${budget}`,
+          'Buyer Name': name || 'Not provided',
+          'Buyer Email': email,
+          'Message / Details': message || 'No message provided'
+        })
+      });
+    } catch (err) {
+      // Fallback: Open Mail Client
+      const subject = encodeURIComponent(`Domain Budget Proposal for OGADENIA.COM ($${budget})`);
+      const bodyContent = encodeURIComponent(
+        `Hello,\n\nI am interested in acquiring the domain OGADENIA.COM.\n\n` +
+        `Proposed Budget: $${budget}\n` +
+        `Name: ${name || 'N/A'}\n` +
+        `Email: ${email}\n\n` +
+        `Additional Details / Message:\n${message || 'No additional details provided.'}\n`
+      );
+      window.location.href = `mailto:${recipient}?subject=${subject}&body=${bodyContent}`;
+    } finally {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setShowOfferModal(false);
+        setName('');
+        setEmail('');
+        setBudget('');
+        setMessage('');
+      }, 5000);
+    }
   };
+
 
   const faqs = [
     {
@@ -300,10 +323,11 @@ export default function Home() {
 
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black font-bold text-base transition-all duration-200 shadow-lg shadow-emerald-500/25 flex items-center justify-center space-x-2 active:scale-98"
+                disabled={isSubmitting}
+                className="w-full py-3.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black font-bold text-base transition-all duration-200 shadow-lg shadow-emerald-500/25 flex items-center justify-center space-x-2 active:scale-98 disabled:opacity-50"
               >
                 <Send className="w-5 h-5" />
-                <span>Send Email Offer with Budget</span>
+                <span>{isSubmitting ? 'Sending Proposal...' : 'Send Email Offer with Budget'}</span>
               </button>
             </form>
           )}
