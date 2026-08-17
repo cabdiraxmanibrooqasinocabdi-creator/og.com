@@ -109,12 +109,18 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#050807] text-slate-100 font-sans selection:bg-emerald-500 selection:text-black">
-      {/* Background Gradient Mesh */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 -right-40 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl"></div>
+      {/* Background Flag Image & Atmospheric Overlay */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 filter saturate-125 brightness-90 scale-105" 
+          style={{ backgroundImage: "url('/flag-waving.jpg')" }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050807]/80 via-[#050807]/90 to-[#050807]"></div>
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 -right-40 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-emerald-600/20 rounded-full blur-3xl"></div>
       </div>
+
 
       {/* Header / Navbar */}
       <header className="relative z-10 border-b border-emerald-900/30 backdrop-blur-md bg-[#050807]/80">
@@ -160,7 +166,27 @@ export default function Home() {
           Elevate your brand with a memorable, high-impact .COM domain name. Perfect for technology platforms, regional powerhouses, or digital enterprises.
         </p>
 
+        {/* Flag Image Card */}
+        <div className="max-w-2xl mx-auto mb-10 overflow-hidden rounded-2xl border border-emerald-500/30 shadow-2xl relative group">
+          <img 
+            src="/flag-waving.jpg" 
+            alt="Ogaden Flag Waving" 
+            className="w-full h-64 sm:h-80 object-cover object-center group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#090d0b] via-[#090d0b]/40 to-transparent flex items-end p-6">
+            <div className="text-left">
+              <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-500/30">
+                Official Brand Domain
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-white mt-2 font-display">
+                OGADENIA.COM
+              </h2>
+            </div>
+          </div>
+        </div>
+
         {/* Domain Name Highlight Box */}
+
         <div className="max-w-xl mx-auto mb-12 p-2 rounded-2xl bg-gradient-to-b from-emerald-500/20 to-emerald-950/40 border border-emerald-500/30 backdrop-blur-xl shadow-2xl">
           <div className="p-6 bg-[#090d0b] rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center space-x-3">
